@@ -1,9 +1,9 @@
 import java.util.*;
 public class LCA {
 	
-	/* This program creates a binary tree and can 
+	/* This program creates a predefined binary tree and can 
 	* perform a lowest common ancestor evaluation 
-	*on two node of this tree
+	* on two nodes of this tree
 	*/
 
 
@@ -19,16 +19,34 @@ public class LCA {
 
 		//System.out.println(root.id);
 		Scanner scan = new Scanner(System.in);
-
+		System.out.print("Enter id of first node: ");
 		int a = scan.nextInt();
+		System.out.print("Enter id of second node: ");
 		int b = scan.nextInt();
+
+		//System.out.println(contains(root, new Node(a))?"true":"false");
+
 
 		Node LCANode = getLCA(root, new Node(a), new Node(b));
 
-		System.out.println("LCA of " + a + " and " + b + " is " + LCANode.id);
+		if(LCANode != null) {
+			System.out.println("LCA of " + a + " and " + b + " is " + LCANode.id);
+		} else {
+			System.out.println("No LCA found");
+		}
+
 	}
 
+	// set up for recursive getLCAr() calls
 	public static Node getLCA(Node root, Node node1, Node node2) {
+		if(contains(root, node1) && contains(root, node2)) {
+			return getLCAr(root, node1, node2);
+		}
+		return null;
+	}
+
+	// Recursively evaluate the lowest common ancestor
+	public static Node getLCAr(Node root, Node node1, Node node2) {
 		if(root == null) {
 			return null;
 		}
@@ -36,8 +54,8 @@ public class LCA {
 		if(root.id == node1.id || root.id == node2.id) {
 			return root;
 		}
-		Node lef = getLCA(root.left, node1, node2);
-		Node rig = getLCA(root.right, node1, node2);
+		Node lef = getLCAr(root.left, node1, node2);
+		Node rig = getLCAr(root.right, node1, node2);
 
 		if(lef != null && rig != null) {
 			return root;
@@ -45,6 +63,16 @@ public class LCA {
 			return null;
 		} else {
 			return (lef == null)?rig:lef;
+		}
+	}
+
+	public static Boolean contains(Node curr, Node node) {
+		if(curr == null) {
+			return false;
+		} else if (curr.id == node.id) {
+			return true;
+		} else {
+			return (contains(curr.left, node) || contains(curr.right, node));
 		}
 	}
 }
