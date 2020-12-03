@@ -6,6 +6,7 @@ public class LCA {
 	* on two nodes of this tree
 	*/
 
+	//(Old language)
 
 	public static void main(String args[]) {
 		//Create binary tree
@@ -17,18 +18,17 @@ public class LCA {
 		root.right.left = new Node(6);
 		root.right.right = new Node(7);
 
-		//System.out.println(root.id);
+		//Prompts for node ids
 		Scanner scan = new Scanner(System.in);
 		System.out.print("Enter id of first node: ");
 		int a = scan.nextInt();
 		System.out.print("Enter id of second node: ");
 		int b = scan.nextInt();
 
-		//System.out.println(contains(root, new Node(a))?"true":"false");
-
-
+		//Evaluate LCA
 		Node LCANode = getLCA(root, new Node(a), new Node(b));
 
+		//Print results of LCA evaluation
 		if(LCANode != null) {
 			System.out.println("LCA of " + a + " and " + b + " is " + LCANode.id);
 		} else {
@@ -50,10 +50,10 @@ public class LCA {
 		if(root == null) {
 			return null;
 		}
-		//System.out.println(root.id);
 		if(root.id == node1.id || root.id == node2.id) {
 			return root;
 		}
+
 		Node lef = getLCAr(root.left, node1, node2);
 		Node rig = getLCAr(root.right, node1, node2);
 
@@ -66,6 +66,7 @@ public class LCA {
 		}
 	}
 
+	// Recursively evaluates if a node is a child of another supplied node(curr)
 	public static Boolean contains(Node curr, Node node) {
 		if(curr == null) {
 			return false;
@@ -77,6 +78,7 @@ public class LCA {
 	}
 }
 
+// Definition of type Node
 class Node {
 	Node left;
 	Node right;
