@@ -17,6 +17,7 @@ public class LCATest {
 		root.right.right = new Node(7);
 	} 
 
+	//Tests functionality of contains() method
 	@Test
 	public void testContains() {
 		
