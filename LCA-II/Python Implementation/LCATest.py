@@ -51,14 +51,12 @@ class testLCA(unittest.TestCase):
         root.addChildNode(4, 5)
         root.addChildNode(5, 6)
 
-
         self.assertTrue(root.searchNode(3), "Check if tree with root provided contains a specified node")
         self.assertFalse(root.searchNode(9), "Check if tree with root provided contains a specified node not in tree")
 
         # search and addChildNode are dependent on one another, best way to test?
         self.assertTrue(root.searchNode(6), "Check if tree contains a specified node that's not a child of the root")
         
-
     def testgetLCA(self):
         #Create tree
         # 1 = [2, 3, 4, 5], 2 = [4], 3 = [4, 5], 4 = [5], 5 = [6], 6 = []
@@ -73,11 +71,12 @@ class testLCA(unittest.TestCase):
         root.addChildNode(4, 5)
         root.addChildNode(5, 6)
 
-        #self.assertEqual(LCA.getLCA(root, [4, 5]).id, 2, "Check LCA of two nodes contained in tree")
-        #self.assertEqual(LCA.getLCA(root, [4, 5, 2]).id, 2, "Check LCA of three nodes contained in tree")
-        #self.assertIsNone(LCA.getLCA(root, [2, 8]), "Check getLCA() when one node is not on tree")
+        self.assertIsNone(LCA.getLCA(root, []), "Check LCA of no nodes contained in tree")     # How to check if [] or None??
+        self.assertEqual(LCA.getLCA(root, [4]), 4, "Check LCA of one nodes contained in tree")
+        self.assertIsNone(LCA.getLCA(root, [9]),"Check LCA of one nodes not in tree")
+        self.assertIsNone(LCA.getLCA(root, [2, 8]), "Check getLCA() when one node is not on tree")
+        #self.assertEqual(LCA.getLCA(root, [4, 5]), 2, "Check LCA of two nodes contained in tree")
+        #self.assertEqual(LCA.getLCA(root, [4, 5, 2]), 2, "Check LCA of three nodes contained in tree")
         
-
-
 if __name__ == '__main__':
     unittest.main()

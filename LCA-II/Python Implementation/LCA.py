@@ -5,7 +5,7 @@
 
 from Node import Node
 
-# Recursive funtion to evaluate LCA
+#Recursive funtion to evaluate LCA
 def getLCAr(curr, node1, node2):
     if(curr == None):
         return None
@@ -23,17 +23,24 @@ def getLCAr(curr, node1, node2):
             return rig if (lef == None) else lef
 
 # Set-up for recursive function to find LCA of two nodes in a tree reference by it's root node
-def getLCA(root, node1, node2):
-    if(contains(root, node1) and contains(root, node2)):
-        return getLCAr(root, node1, node2)
-    else:
+# Returns id of Node that is LCA
+def getLCA(root, nodeList):
+    if len(nodeList) >= 2:
+        node1 = root.searchNode(nodeList[0])
+        if node1 is None:   # Node is not in tree
+            return None
+        for i in range(1, len(nodeList)):
+            node2 = root.searchNode(nodeList[i])
+            if node2 is None:
+                return None
+            else:
+                node1 = getLCAr(root, node1, node2)  
+        return node1    #Contains LCA   
+    elif len(nodeList) == 1:
+        node1 = root.searchNode(nodeList[0])
+        if node1 is None:
+            return None
+        else:
+            return nodeList[0]
+    elif len(nodeList) == 0:
         return None
-
-# Evaluates if a node is a child of another supplied node(curr)
-def contains(curr, node):
-    if(curr == None):
-        return False
-    elif(curr.id == node.id):
-        return True
-    else:
-        return (contains(curr.left, node) or contains(curr.right, node))

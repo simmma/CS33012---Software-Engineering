@@ -9,11 +9,8 @@ class Node:
             # TODO add test for non-cyclicalness
             parentNode.children.append(Node(childID))
 
-    #Otherwise do nothing...
-
-
-    # # Navigate to node with ID 
-    # # Returns node if found, otherwise None
+    # Navigate to Node with ID 
+    # Return of type Node if found, otherwise None
     def searchNode(self, nodeID):
         if(self.id == nodeID):
             return self
@@ -24,6 +21,4 @@ class Node:
                 result = self.children[i].searchNode(nodeID) # result???
                 if result is not None:
                     return result
-            #Otherwise
             return None
-            
