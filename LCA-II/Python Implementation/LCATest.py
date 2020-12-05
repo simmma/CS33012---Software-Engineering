@@ -5,56 +5,73 @@ from Node import Node
 class testLCA(unittest.TestCase):
 
     # Test to check tree building functionality
-    def testNode(self):
-
-        #self.assertEqual(Node(0).children, [], "Should not contain any nodes")
+    def testAddChildNode(self):
+        #Check leaf nodes
+        root = Node(1)
+        self.assertEqual(root.children, [], "Should not contain any nodes")
 
         #Create tree
         # 1 = [2, 3, 4, 5], 2 = [4], 3 = [4, 5], 4 = [5], 5 = []
-        root = Node(1)
-        # addChildNode(root, parentNodeID, childNodeID)
-        # addChildNode(root, 1, 2)
-        # addChildNode(root, 2, 4)
+        root.addChildNode(1, 2)
+        root.addChildNode(1, 3)
+        root.addChildNode(1, 4)
+        root.addChildNode(1, 5)
+        root.addChildNode(2, 4)
+        root.addChildNode(3, 4)
+        root.addChildNode(3, 5)
+        root.addChildNode(4, 5)
 
-        #check children
+        #check children of root
         listID = []
-        #for i in range(len(root.children)):
-        #    listID.append(root.children[i])
-        #self.assertEqual(listID, [2, 3, 4, 5], "Check if all children can be found from the root node")
+        for i in range(len(root.children)):
+            listID.append(root.children[i].id)
+        self.assertEqual(listID, [2, 3, 4, 5], "Check if all children can be found from the root node")
         
-        #currNode = searchNode(root, nodeID)
+        #check children of non-root node
         listID.clear()
-        #for i in range(len(currNode.children)):
-        #    listID.append(currNode.id)
-        #self.assertEqual(listID, [4], "Check if non-root node can be found and accessed")
+        currNode = root.searchNode(4)
+        for i in range(len(currNode.children)):
+           listID.append(currNode.children[i].id)
+        self.assertEqual(listID, [5], "Check if non-root node can be found and accessed")
 
         # Try to add a node cyclically
         # self.assertEqual(addChildNode(root, 5, 1), -1, "Checks node can't be added cyclically")
 
     def testSearchNode(self):
-
-        # Check None arguments
-
         #Create tree
-        # 1 = [2, 3, 4, 5], 2 = [4], 3 = [4, 5], 4 = [5], 5 = []
+        # 1 = [2, 3, 4, 5], 2 = [4], 3 = [4, 5], 4 = [5], 5 = [6], 6 = []
         root = Node(1)
-        # addChildNode(root, parentNodeID, childNodeID)
-        # addChildNode(root, 1, 2)
-        # addChildNode(root, 2, 4)
+        root.addChildNode(1, 2)
+        root.addChildNode(1, 3)
+        root.addChildNode(1, 4)
+        root.addChildNode(1, 5)
+        root.addChildNode(2, 4)
+        root.addChildNode(3, 4)
+        root.addChildNode(3, 5)
+        root.addChildNode(4, 5)
+        root.addChildNode(5, 6)
 
-        #self.assertTrue(Node.searchNode(root, Node(3)), "Check if tree with root provided contains a specified node")
-        #self.assertFalse(Node.searchNode(root, Node(9)), "Check contains() with node not in tree")
+
+        self.assertTrue(root.searchNode(3), "Check if tree with root provided contains a specified node")
+        self.assertFalse(root.searchNode(9), "Check if tree with root provided contains a specified node not in tree")
+
+        # search and addChildNode are dependent on one another, best way to test?
+        self.assertTrue(root.searchNode(6), "Check if tree contains a specified node that's not a child of the root")
+        
 
     def testgetLCA(self):
-
-        # Check None arguments
-
         #Create tree
-        # 1 = [2, 3, 4, 5], 2 = [4], 3 = [4, 5], 4 = [5], 5 = []
+        # 1 = [2, 3, 4, 5], 2 = [4], 3 = [4, 5], 4 = [5], 5 = [6], 6 = []
         root = Node(1)
-        # addChildNode(root, parentNodeID, childNodeID)
-        # addChildNode(root, 1, 2)
-        # addChildNode(root, 2, 4)
+        root.addChildNode(1, 2)
+        root.addChildNode(1, 3)
+        root.addChildNode(1, 4)
+        root.addChildNode(1, 5)
+        root.addChildNode(2, 4)
+        root.addChildNode(3, 4)
+        root.addChildNode(3, 5)
+        root.addChildNode(4, 5)
+        root.addChildNode(5, 6)
 
         #self.assertEqual(LCA.getLCA(root, [4, 5]).id, 2, "Check LCA of two nodes contained in tree")
         #self.assertEqual(LCA.getLCA(root, [4, 5, 2]).id, 2, "Check LCA of three nodes contained in tree")
