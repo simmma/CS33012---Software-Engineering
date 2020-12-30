@@ -4,7 +4,7 @@ import json
 
 url = "https://api.github.com/"
 user = "simmma"
-token = ""  # Enter valid token here!
+token = ""
 
 def checkStatus(resp):
     if resp.status_code != 200:
@@ -24,6 +24,12 @@ def getUserAllRepos():
 
 
 def main():
+    # Get personal access token (this file is hiden using .gitignore)
+    with open("Github-Visualisation\PAT.txt", "r") as tokenFile:
+        global token
+        token = tokenFile.read()
+    tokenFile.close()
+
     # get data for initial attempt at visualisation
     raw_data = getUserAllRepos().json()["items"]
     data = json.dumps(raw_data[2], indent = 4)
