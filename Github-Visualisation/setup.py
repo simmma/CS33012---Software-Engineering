@@ -31,10 +31,22 @@ def main():
     tokenFile.close()
 
     # get data for initial attempt at visualisation
-    raw_data = getUserAllRepos().json()["items"]
-    data = json.dumps(raw_data[2], indent = 4)
+    raw_data = getUserAllRepos().json()
+    data = json.dumps(raw_data, indent = 4)
 
+    # extract required data
+    items_data = raw_data["items"]
+    data = {}
+    for i in range(raw_data["total_count"]):
+        item_data = items_data[i]
+        key_id = item_data["id"]
+        data[key_id] = {}
+        data[key_id]["name"] = item_data["name"]
+        data[key_id]["privacy"] = ("Private" if (item_data["private"]) else "Public")
+    print(data)
+    
     # Writing to data set file
+    data = json.dumps(data, indent = 4)
     with open("Github-Visualisation\data.json", "w") as dataset: # doesn't need the directory specified when run in cmd, VS Code needs it????
         dataset.write(data)
     dataset.close()
