@@ -25,5 +25,5 @@ privacies = ["Public", "Private"]
 tally = [pub_count, pri_count]
 ax.pie(tally, labels = privacies, autopct='%1.2f%%')
 plt.title('Ratio of public to private repos')
-plt.savefig('Github-Visualisation\pieImage.png',dpi=300,bbox_inches='tight') 
+plt.savefig('Github-Visualisation\Img\pieImage.png',dpi=300,bbox_inches='tight') 
 # plt.show()
