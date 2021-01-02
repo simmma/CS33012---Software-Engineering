@@ -13,6 +13,15 @@ def checkStatus(resp):
         return -1
     return 0
 
+def getURLData(add):
+    if token == "":
+        print("Please enter a valid token!")
+        return 
+    resp = requests.get(url + add, auth=(user, token))
+    if(checkStatus(resp)):
+        return ""
+    return resp
+
 def getUserAllRepos():
     if token == "":
         print("Please enter a valid token!")
@@ -30,24 +39,25 @@ def main():
         token = tokenFile.read()
     tokenFile.close()
 
+    with open("Github-Visualisation/repoRef.json", "r") as refFile:
+        temp = json.load(refFile)
+        login = temp["login"]
+        repo_name = temp["repo_name"]
+    refFile.close()
+
     # get data for initial attempt at visualisation
-    raw_data = getUserAllRepos().json()
-    data = json.dumps(raw_data, indent = 4)
+    raw_data = getURLData("repos/" + login + "/" + repo_name + "/" + "contributors").json()
 
     # extract required data
-    items_data = raw_data["items"]
     data = {}
-    for i in range(raw_data["total_count"]):
-        item_data = items_data[i]
-        key_id = item_data["id"]
+    for i in range(len(raw_data)):
+        key_id = raw_data[i]["login"]
         data[key_id] = {}
-        data[key_id]["name"] = item_data["name"]
-        data[key_id]["privacy"] = ("Private" if (item_data["private"]) else "Public")
-    print(data)
-    
+        data[key_id]["contributions"] = raw_data[i]["contributions"]
+        
     # Writing to data set file
     data = json.dumps(data, indent = 4)
-    with open("Github-Visualisation\data.json", "w") as dataset: # doesn't need the directory specified when run in cmd, VS Code needs it????
+    with open("Github-Visualisation\df_contrib.json", "w") as dataset: # doesn't need the directory specified when run in cmd, VS Code needs it????
         dataset.write(data)
     dataset.close()
 
