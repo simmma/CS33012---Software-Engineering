@@ -33,31 +33,37 @@ def getUserAllRepos():
 
 
 def main():
+    print("Called main() from setup.py")
     # Get personal access token (this file is hiden using .gitignore)
-    with open("Github-Visualisation\PAT.txt", "r") as tokenFile:
+    with open("PAT.txt", "r") as tokenFile:
         global token
         token = tokenFile.read()
     tokenFile.close()
 
-    with open("Github-Visualisation/repoRef.json", "r") as refFile:
+    with open("repoRef.json", "r") as refFile:
         temp = json.load(refFile)
         login = temp["login"]
         repo_name = temp["repo_name"]
     refFile.close()
 
-    # get data for initial attempt at visualisation
-    raw_data = getURLData("repos/" + login + "/" + repo_name + "/" + "contributors").json()
-
-    # extract required data
-    data = {}
-    for i in range(len(raw_data)):
-        key_id = raw_data[i]["login"]
-        data[key_id] = {}
-        data[key_id]["contributions"] = raw_data[i]["contributions"]
+    # get data for contributions
+    raw_data = getURLData("repos/" + login + "/" + repo_name + "/" + "contributors")
+    if raw_data == "":
+        print("Error calling Github API")
+        data = "[]"
+    else:
+        raw_data = raw_data.json()
+        # extract required data
+        data = []
+        for i in range(len(raw_data)):
+            data.append({})
+            data[i]["login"] = raw_data[i]["login"]
+            data[i]["contributions"] = raw_data[i]["contributions"]
         
-    # Writing to data set file
-    data = json.dumps(data, indent = 4)
-    with open("Github-Visualisation\df_contrib.json", "w") as dataset: # doesn't need the directory specified when run in cmd, VS Code needs it????
+        # Writing to data set file
+        data = json.dumps(data, indent = 4)
+
+    with open("df_contrib.json", "w") as dataset: # doesn't need the directory specified when run in cmd, VS Code needs it????
         dataset.write(data)
     dataset.close()
 
