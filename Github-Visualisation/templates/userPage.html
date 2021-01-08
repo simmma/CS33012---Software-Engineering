@@ -1,0 +1,16 @@
+<!doctype html>
+<title>User Visualisation</title>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+        img {
+          border-radius: 50%;
+        }
+        </style>
+    </head>
+    <body>
+        <h1>Visualisation of {{login}}'s Github profile</h1>
+        <img class="viewpoint", src="{{url_for('static', filename='user_avatar.jpg')}}", alt="avatar image", width=300, height=auto>
+    </body>
+</html>
